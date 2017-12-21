@@ -1,0 +1,33 @@
+<sitemap>
+    <page path="">
+        <titre><![CDATA[Bienvenue dans votre programme de fidélisation !]]></titre>
+        <template>home.inc.php</template>
+        <controller>home.inc.php</controller>
+        <page path="inscription">
+            <titre><![CDATA[Inscrivez vous !]]></titre>
+            <template>register.inc.php</template>
+            <controller>register.inc.php</controller>
+        </page>
+        <page path="confirmation">
+            <titre><![CDATA[Confirmation]]></titre>
+            <template>register.confirm.inc.php</template>
+        </page>
+        <page path="mot-de-passe-perdu">
+            <titre><![CDATA[Mot de passe perdu]]></titre>
+            <template>lost-password.inc.php</template>
+            <controller>lost-password.inc.php</controller>
+        </page>
+        <page path="password-reset" >
+            <page path="@" pathControllerFunction="User::checkForgottenPasswordPath" pathFallBackPage="404">
+                <titre><![CDATA[Changement mot de passe]]></titre>
+                <template>reset-password.inc.php</template>
+                <controller>reset-password.inc.php</controller>
+            </page>
+        </page>
+
+        <page path="404">
+            <titre><![CDATA[404]]></titre>
+            <template>error.inc.php</template>
+        </page>
+    </page>
+</sitemap>

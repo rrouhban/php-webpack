@@ -3,31 +3,32 @@ const ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
 const path = require('path');
 const webpack = require( 'webpack' );
 
-function makeStyleLoader( type ) {
-    const cssLoader = {
-        loader: 'css-loader',
-        options: {
-            minimize: env.production
-        }
-    };
-    const loaders = [ cssLoader ];
-    if ( type )
-        loaders.push( type + '-loader' );
-    if ( env.production ) {
-        return ExtractTextPlugin.extract( {
-            use: loaders,
-            fallback: 'vue-style-loader'
-        } );
-    } else {
-        return [ 'vue-style-loader' ].concat( loaders );
-    }
-}
 const extractSass = new ExtractTextPlugin({
     filename: "[name].[contenthash].css",
     disable: process.env.NODE_ENV === "development"
 });
 
+
 module.exports = function( env = {} ) {
+    function makeStyleLoader(type) {
+        const cssLoader = {
+            loader: 'css-loader',
+            options: {
+                minimize: env.production
+            }
+        };
+        const loaders = [cssLoader];
+        if (type)
+            loaders.push( type + '-loader' );
+        if (env.production) {
+            return ExtractTextPlugin.extract( {
+                use: loaders,
+                fallback: 'vue-style-loader'
+            } );
+        } else {
+            return [ 'vue-style-loader' ].concat(loaders);
+        }
+    }
     if (env.production)
         process.env.NODE_ENV = 'production';
     return {
@@ -43,15 +44,12 @@ module.exports = function( env = {} ) {
                     test: /\.scss$/,
                     use: extractSass.extract({
                         use: [{
-                            loader: "css-loader",
-                            options: makeStyleLoader('css')
+                            loader: makeStyleLoader('css'),
 
                         }, {
-                            loader: "sass-loader",
-                            options: makeStyleLoader('scss')
-
+                            loader:  makeStyleLoader('sass'),
                         }],
-                        fallback: "style-loader"
+                        fallback: makeStyleLoader('style')
                     })
                 },
                 {

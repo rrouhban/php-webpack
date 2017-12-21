@@ -4,6 +4,6 @@ import Vue from 'vue';
 
 
 new Vue( {
-    el: selector,
+    el: '#app',
     render: h => h(App)
 } );

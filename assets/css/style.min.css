@@ -1,0 +1,41 @@
+#debug {
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+  z-index: 10000; }
+  #debug__header {
+    font-size: 25px;
+    height: 0;
+    padding: 0;
+    position: relative; }
+    #debug__header__button {
+      border-radius: 3px;
+      font-size: 15px;
+      line-height: 1.33;
+      padding: 4px 16px;
+      position: absolute;
+      right: 10px;
+      top: -40px; }
+  #debug__console {
+    background: rgba(10, 10, 10, 0.6);
+    border-top: 2px solid #333333;
+    color: white;
+    font-family: "Courier New",Courier,monospace;
+    max-height: 50vh;
+    margin: 0;
+    overflow-y: scroll;
+    padding: 0; }
+    #debug__console li {
+      border-bottom: 2px solid #999;
+      list-style: none;
+      padding: 8px 15px; }
+      #debug__console li h3 {
+        float: left;
+        font-size: 12px;
+        margin: 0;
+        padding: 0 15px; }
+      #debug__console li__value-box {
+        font-size: 10px;
+        margin-left: 150px; }
+        #debug__console li__value-box pre {
+          margin: 0; }

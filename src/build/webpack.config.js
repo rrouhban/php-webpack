@@ -4,52 +4,61 @@ const path = require('path');
 const webpack = require( 'webpack' );
 
 const extractSass = new ExtractTextPlugin({
-    filename: "[name].[contenthash].css",
+    filename: "css/style.min.css",
     disable: process.env.NODE_ENV === "development"
 });
 
+const VENDOR_LIBS = [
+    'vue'
+];
 
 module.exports = function( env = {} ) {
-    function makeStyleLoader(type) {
-        const cssLoader = {
-            loader: 'css-loader',
-            options: {
-                minimize: env.production
-            }
-        };
-        const loaders = [cssLoader];
-        if (type)
-            loaders.push( type + '-loader' );
-        if (env.production) {
-            return ExtractTextPlugin.extract( {
-                use: loaders,
-                fallback: 'vue-style-loader'
-            } );
-        } else {
-            return [ 'vue-style-loader' ].concat(loaders);
-        }
-    }
+    // function makeStyleLoader(type) {
+    //     const cssLoader = {
+    //         loader: 'css-loader',
+    //         options: {
+    //             minimize: env.production
+    //         }
+    //     };
+    //     const loaders = [cssLoader];
+    //     if (type)
+    //         loaders.push( type + '-loader' );
+    //     if (env.production) {
+    //         return ExtractTextPlugin.extract( {
+    //             use: loaders,
+    //             fallback: 'vue-style-loader'
+    //         } );
+    //     } else {
+    //         return [ 'vue-style-loader' ].concat(loaders);
+    //     }
+    // }
     if (env.production)
         process.env.NODE_ENV = 'production';
     return {
-        entry: './src/main.js',
+        entry: {
+            main: './src/main.js',
+            vendor: VENDOR_LIBS
+        },
         output: {
             path: path.resolve( __dirname, '../../assets' ),
-            filename: env.production ? 'js/main.min.js?[chunkhash]' : 'js/main.js',
-            publicPath: env.production ? '../' : 'http://www.vue-php.net/'
+            filename: env.production ? 'js/[name].min.js?[chunkhash]' : 'js/[name].js',
+            publicPath: env.production ? '../' : 'http://www.vue-php.com/'
         },
         module: {
             rules: [
                 {
+                    test: /\.vue$/,
+                    loaders: ['vue-loader']
+                },
+                {
                     test: /\.scss$/,
                     use: extractSass.extract({
                         use: [{
-                            loader: makeStyleLoader('css'),
-
+                            loader: "css-loader"
                         }, {
-                            loader:  makeStyleLoader('sass'),
+                            loader: "sass-loader"
                         }],
-                        fallback: makeStyleLoader('style')
+                        fallback: "style-loader"
                     })
                 },
                 {
@@ -63,16 +72,8 @@ module.exports = function( env = {} ) {
                             }
                         }
                     ]
-                }, {
-                    test: /\.vue$/,
-                    loaders: ['vue-loader'],
-                    options: {
-                        loaders: {
-                            css: makeStyleLoader(),
-                            scss: makeStyleLoader( 'scss' )
-                        }
-                    }
-                }, {
+                },
+                {
                     test: /\.js$/,
                     loader: 'babel-loader',
                     exclude: /node_modules/
@@ -80,6 +81,7 @@ module.exports = function( env = {} ) {
             ]
         },
         plugins: env.production ? [
+            extractSass,
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify('development'),
                 'process.env.APP_VERSION': JSON.stringify(process.env.npm_package_version),
@@ -89,21 +91,23 @@ module.exports = function( env = {} ) {
                     warnings: false
                 }
             } ),
-            new ExtractTextPlugin ({
-                filename: 'css/style.min.css?[contenthash]'
-            } ),
             new AssetsPlugin ({
                 filename: 'assets.json',
                 path: path.resolve( __dirname, '../../assets' ),
                 fullPath: false
-            } )
+            } ),
+            new webpack.optimize.CommonsChunkPlugin({
+                names: ['vendor', 'manifest']
+            }),
         ] : [
+            extractSass,
             new webpack.HotModuleReplacementPlugin()
         ],
         resolve: {
             extensions: [ '.js', '.vue', '.json' ],
             alias: {
-                '@': path.resolve( __dirname, './src' )
+                '@': path.resolve( __dirname, '..' ),
+                vue: 'vue/dist/vue.js'
             }
         },
         devServer: {

@@ -5,7 +5,11 @@ help: ## This help.
 
 .DEFAULT_GOAL := help
 
-run: ## Run containers
+build: ## Build containers
+	$(info --> Build containers)
+	@docker-compose build
+
+up: ## Run containers
 	$(info --> Run containers)
 	@docker-compose up -d --build --force-recreate
 
@@ -21,7 +25,7 @@ down: ## Stop and remove containers
 	$(info --> Stop and remove a running containers)
 	@docker-compose down
 
-logs: ## Display logs
+log: ## Display logs
 	$(info --> Display log)
 	@docker-compose logs --follow
 

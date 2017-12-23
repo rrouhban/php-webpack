@@ -8,7 +8,7 @@
 export default {
   data() {
     return {
-      hello: 'hello word'
+      hello: 'hello'
     }
   },
 }

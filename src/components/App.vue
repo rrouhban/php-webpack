@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="app">
     {{hello}}
   </div>
 </template>
@@ -8,7 +8,7 @@
 export default {
   data() {
     return {
-      hello: 'hello'
+      hello: 'hello you'
     }
   },
 }

@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  app:
+    container_name: ${APP_NAME}-app
+    build: docker/php
+    user: www-data
+    working_dir: ${APP_DIR}
+    volumes:
+      - ${PWD}:${APP_DIR}
+
+  nginx:
+    container_name: ${APP_NAME}-nginx
+    build: docker/nginx
+    ports:
+      - ${WEB_PORT}:80
+    volumes:
+      - ${PWD}:${APP_DIR}
+
+  node:
+    container_name: ${APP_NAME}-node
+    image: node:9
+    user: node
+    command: bash -c "yarn && yarn dev"
+    working_dir: ${APP_DIR}
+    volumes:
+      - ${PWD}:${APP_DIR}

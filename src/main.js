@@ -1,5 +1,5 @@
-import '@/styles/main.scss';
-import App from '@/components/App.vue';
+import './styles/main.scss';
+import App from './components/App.vue';
 import Vue from 'vue';
 
 

@@ -9,4 +9,5 @@ else
 {
     include(dirname(__FILE__).'/home.unlogged.inc.php'); // On ne devrait jamais tombé là...
 }
-
+?>
+<div id="app"></div>

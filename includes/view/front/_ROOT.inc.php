@@ -22,23 +22,23 @@ require_once(dirname(__FILE__).'/../../model/HtmlData.class.php');
 
 </head>
 <body>
-
+<div id="app">
     <?php
     DEBUG::debug_log( HtmlData::TemplateFilePath(), "HtmlData::TemplateFilePath()");
     include(dirname(__FILE__)."/".HtmlData::TemplateFilePath());
+
+    if(DEBUG::$debugMode === true){
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+        DEBUG::debug_log($time, "Process Time");
+    }
+    include("_DEBUG.inc.php");
     ?>
 
 <!-- JS -->
 <?php
 foreach(HtmlData::ScriptList() as $jsFile){ ?><script src='<?php echo $jsFile;?>'></script><?php echo "\r\n\t"; }
-
-// On recup le temps d'execution :
-if(DEBUG::$debugMode === true){
-    $time_end = microtime(true);
-    $time = $time_end - $time_start;
-    DEBUG::debug_log($time, "Process Time");
-}
-include("_DEBUG.inc.php");
 ?>
+</div>
 </body>
 </html>

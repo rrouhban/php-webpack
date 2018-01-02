@@ -8,7 +8,7 @@ module.exports = {
         main: './src/main.js',
     },
     output: {
-        path: path.resolve(__dirname, 'build'),
+        path: path.resolve(__dirname, 'assets'),
         filename: 'js/[name].js',
     },
     module: {
@@ -54,4 +54,9 @@ module.exports = {
             },
         }),
     ],
+    resolve: {
+        alias: {
+            vue: 'vue/dist/vue.js'
+        }
+    }
 };

@@ -3,25 +3,16 @@
 require_once(dirname(__FILE__) . '/../../controller/Debug.class.php');
 
 if(DEBUG::$debugMode){?>
-    <div id="debug" v-if="debugPanelShow">
+    <debug-panel id="debug">
         <div class="debug__header">
-            <button class="btn btn-primary btn-lg debug__header__button" type="button">
-                <span class="glyphicon glyphicon-eye-open"></span> Debug PANEL
+            <button @click="togglePanel()" class="btn btn-primary btn-lg debug__header__button" type="button">
+                <span class="glyphicon glyphicon-eye-open"></span>
             </button>
         </div>
-        <ul class="debug__console">
+        <ul class="debug__console" v-if="debugPanelOpen">
             <?php
             DEBUG::getHtmlList();
             ?>
         </ul>
-    </div>
+    </debug-panel>
 <?php } ?>
-
-<script>
-    new Vue({
-        el: '#app',
-        data: {
-            debugPanelShow: false;
-        }
-    })
-</script>
